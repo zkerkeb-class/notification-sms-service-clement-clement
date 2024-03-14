@@ -3,12 +3,12 @@ import {
   sendConfirmationEmail,
   sendPasswordResetCode,
 } from '../controllers/emailController.js';
-// import {sendSMS} from '../controllers/smsController';
+import {sendSMS} from '../controllers/smsController.js';
 
 const router = express.Router();
 
 router.post('/sendConfirmationEmail', sendConfirmationEmail);
 router.post('/sendPasswordResetCode', sendPasswordResetCode);
-// router.post('/sendSMS', sendSMS);
+router.post('/sendSMS', sendSMS);
 
 export default router;

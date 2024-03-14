@@ -16,6 +16,9 @@
     "@babel/polyfill": "^7.12.1",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "lodash.template": "^4.5.0",
+    "nodemailer": "^6.9.12",
     "redis": "^4.6.12"
   },
   "devDependencies": {

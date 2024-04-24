@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import routes from './src/routes/index.js';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const port = process.env.PORT;
 const jwtSecret = process.env.JWT_SECRET;
 
 // Middleware Body Parser
+app.use(cors());
 app.use(express.json());
 
 app.use('/api', routes); // Toutes les routes seront préfixées par /api

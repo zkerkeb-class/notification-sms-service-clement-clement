@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ let transporter = nodemailer.createTransport({
 
 export const sendConfirmationEmail = async (req, res) => {
   // Lire le fichier HTML
-  const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+  //const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
 
   let info = await transporter.sendMail({
     from: '"YNOV WS" <ynov@clementwds.com>', // Expéditeur
@@ -42,3 +43,32 @@ export const sendPasswordResetCode = async (req, res) => {
     .status(200)
     .send(`Code de réinitialisation du mot de passe envoyé: ${info.messageId}`);
 };
+
+export const sendFactureEmail = async (req, res) => {
+  // Lire le fichier HTML
+  const templatePath = './src/templates/factureTemplate.html';
+  const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+
+  // Récupérer les informations du body
+  const { price, billingAddress, firstName, lastName, description } = req.body;
+
+  // Remplacer les placeholders dans le template par les vraies informations
+  const htmlContent = htmlTemplate
+    .replace('{{price}}', price)
+    .replace('{{price2}}', price)
+    .replace('{{price3}}', price)
+    .replace('{{billingAddress}}', billingAddress)
+    .replace('{{firstName}}', firstName)
+    .replace('{{description}}', description)
+    .replace('{{lastName}}', lastName);
+
+  let info = await transporter.sendMail({
+    from: '"YNOV WS" <ynov@clementwds.com>', // Expéditeur
+    to: req.body.email, // Destinataire
+    subject: 'Facture', // Sujet
+    html: htmlContent, // HTML
+  });
+
+  res.status(200).send(`Facture envoyée: ${info.messageId}`);
+};
+

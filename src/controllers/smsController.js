@@ -9,12 +9,12 @@ const vonage = new Vonage({
 });
 
 const from = 'YNOV WS';
-const to = '33619023471';
+// const to = '33619023471';
 const text = 'Bonjour et bienvenue sur Ynov WS';
 
 export const sendSMS = async (req, res) => {
   try {
-    const resp = await vonage.sms.send({to, from, text});
+    const resp = await vonage.sms.send({to: req.body.tel, from, text});
     console.log('Message sent successfully');
     console.log(resp);
     res.status(200).send('Message sent successfully');

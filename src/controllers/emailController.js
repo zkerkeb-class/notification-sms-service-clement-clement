@@ -16,15 +16,17 @@ let transporter = nodemailer.createTransport({
 });
 
 export const sendConfirmationEmail = async (req, res) => {
-  // Lire le fichier HTML
-  //const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+  const {email, token} = req.body; // Récupérez le token de la requête
+
+  // Créez le lien de confirmation
+  const confirmationLink = `http://localhost:3000/verify?token=${token}`;
 
   let info = await transporter.sendMail({
     from: '"YNOV WS" <ynov@clementwds.com>', // Expéditeur
-    to: req.body.email, // Destinataire
+    to: email, // Destinataire
     subject: "Confirmation d'e-mail", // Sujet
-    text: 'Veuillez confirmer votre e-mail', // Texte brut
-    html: '<b>Veuillez confirmer votre e-mail</b>', // HTML
+    text: `Veuillez confirmer votre e-mail en cliquant sur ce lien : ${confirmationLink}`, // Texte brut
+    html: `<b>Veuillez confirmer votre e-mail en cliquant sur ce <a href="${confirmationLink}">lien</a></b>`, // HTML
   });
 
   res.status(200).send(`E-mail de confirmation envoyé: ${info.messageId}`);
@@ -50,7 +52,7 @@ export const sendFactureEmail = async (req, res) => {
   const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
 
   // Récupérer les informations du body
-  const { price, billingAddress, firstName, lastName, description } = req.body;
+  const {price, billingAddress, firstName, lastName, description} = req.body;
 
   // Remplacer les placeholders dans le template par les vraies informations
   const htmlContent = htmlTemplate
@@ -71,4 +73,3 @@ export const sendFactureEmail = async (req, res) => {
 
   res.status(200).send(`Facture envoyée: ${info.messageId}`);
 };
-
